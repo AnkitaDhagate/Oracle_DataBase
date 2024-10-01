@@ -1,0 +1,64 @@
+SQL> create table branch(branch_name varchar2(10) primary key,branch_city varchar2(15) not null,asset varchar2(10) not null);
+SQL> create table customer(cust_name varchar2(10) primary key,cust_street varchar2(15),cust_city varchar2(10) not null);
+SQL> create table account(acc_no varchar2(10) primary key,branch_name varchar2(15),balance Number(10) ,check (balance>500));
+SQL> create table loan(loan_no Varchar2(10) primary key,branch_name varchar2(15),amount Number(10) ,check (amount>0));
+SQL> create table borrower(loan_no Varchar2(10) ,cust_name varchar2(15),primary key(loan_no,cust_name),foreign key(loan_no) references loan,foreign key(cust_name) references customer);
+SQL> create table depositor(acc_no varchar2(10),cust_name varchar2(10),primary key(acc_no,cust_name),foreign key(acc_no) references account,foreign key(cust_name) references customer);
+
+
+SQL> insert into customer values('Adams','Spring','Pittsfiled');
+SQL> insert into customer values('Brooks','Senator','Brooklyn');
+SQL> insert into customer values('Curry','North','Rye');
+SQL> insert into customer values('Glenn','Sand Hill','Woodside');
+SQL> insert into customer values('Green','Walnut','Stamford');
+SQL> insert into customer values('Hayes','Main','Harrison');
+SQL> insert into customer values('Johnson','Alma','Palo Alto');
+SQL> insert into customer values('Jones','Main','Harrison');
+SQL> insert into customer values('Lindsay','Park','Pittsfiled');
+SQL> insert into customer values('Smith','North','Rye');
+SQL> insert into customer values('Williams','Nassau','Princeton');
+
+
+SQL> insert into account values('A-101','Downtown',501);
+SQL> insert into account values('A-102','Perryridge',600);
+SQL> insert into account values('A-201','Brighton',900);
+SQL> insert into account values('A-215','Mianus',700);
+SQL> insert into account values('A-217','Brighton',750);
+SQL> insert into account values('A-222','Redwood',700);
+SQL> insert into account values('A-305','Round Hill',800);
+
+SQL> insert into depositor values('A-102','Hayes');
+SQL> insert into depositor values('A-101','Johnson');
+SQL> insert into depositor values('A-201','Johnson');
+SQL> insert into depositor values('A-217','Jones');
+SQL> insert into depositor values('A-222','Lindsay');
+SQL> insert into depositor values('A-215','Smith');
+
+
+SQL> insert into branch values('Brighton','Brooklyn','7100000');
+SQL> insert into branch values('Downtown','Brooklyn','9000000');
+SQL> insert into branch values('Mianus','Horseneck','400000');
+SQL> insert into branch values('North Town','Rye','3700000');
+SQL> insert into branch values('Perryridge','Horseneck','1700000');
+SQL> insert into branch values('Pownal','Bennington','300000');
+SQL> insert into branch values('Redwood','Palo Alto','2100000');
+SQL> insert into branch values('Round Hill','Horseneck','8000000');
+
+
+SQL> insert into loan values('L-11','Round Hill',900);
+SQL> insert into loan values('L-14','Downtown',1500);
+SQL> insert into loan values('L-15','Perryridge',1500);
+SQL> insert into loan values('L-16','Perryridge',1300);
+SQL> insert into loan values('L-17','Downtown',1000);
+SQL> insert into loan values('L-23','Redwood',2000);
+SQL> insert into loan values('L-93','Mianus',500);
+
+
+SQL> insert into borrower values('L-16','Adams');
+SQL> insert into borrower values('L-93','Curry');
+SQL> insert into borrower values('L-15','Hayes');
+SQL> insert into borrower values('L-14','Jackson');
+SQL> insert into borrower values('L-17','Jones');
+SQL> insert into borrower values('L-11','Smith');
+SQL> insert into borrower values('L-23','Smith');
+SQL> insert into borrower values('L-17','Williams');
