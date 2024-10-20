@@ -1,0 +1,70 @@
+
+Q1. Perform following queries on bank database:
+1. Find the average account balance at the Perryridge branch.
+SQL> select avg(balance) from account where branch_name='Perryridge';
+
+2. Find maximum amount of any loan in the bank
+SQL> select max(amount) from loan;
+
+3. List Numbers of accounts with balances between 700 and 900
+SQL> select count(acc_no) from account where balance between 700 and 900;
+
+4. List total number of account holders in the ‘Capital Bank’ Branch
+SQL> select count(acc_no) from account where branch_name='Capital Bank';
+
+5. List total number of unique Customer city names
+SQL> select count(distinct cust_city) from customer;
+
+6. Find the number of branches that currently have loans.
+SQL> select count(distinct branch_name) from loan;
+
+
+Q2. Create a table EMPLOYEE with following schema: 
+(Emp_no, E_name, E_address,E_ph_no, Dept_no, Dept_name,Job_id, Designation , Salary, joiningdate)
+
+SQL> create table employee(Emp_no number(3),E_name varchar2(8),E_address varchar2(10),E_Ph_no number(10), Dept_no number(2), Dept_name varchar2(10),Job_id varchar2(5), Designation varchar2(10),Salary number(10),joiningdate date);
+
+SQL> INSERT INTO employee (Emp_no, E_name, E_address, E_Ph_no, Dept_no, Dept_name, Job_id, Designation, Salary, joiningdate) 
+VALUES (101, 'John Doe', '123 Elm St', 1234567890, 10, 'HR', 'JD01', 'Manager', 60000, TO_DATE('2023-01-15', 'YYYY-MM-DD'));
+
+SQL> INSERT INTO employee (Emp_no, E_name, E_address, E_Ph_no, Dept_no, Dept_name, Job_id, Designation, Salary, joiningdate)
+VALUES (102, 'Smith', '456 shree', 9876543210, 20, 'Finance', 'JS02', 'Analyst', 50000, TO_DATE('2022-11-30', 'YYYY-MM-DD'));
+
+SQL> INSERT INTO employee (Emp_no, E_name, E_address, E_Ph_no, Dept_no, Dept_name, Job_id, Designation, Salary, joiningdate)
+VALUES (103, 'Alice', '789 Pine', 1231231234, 30, 'IT', 'AJ03', 'Developer', 70000, TO_DATE('2024-03-22', 'YYYY-MM-DD'));
+
+
+Write SQL statements for the following query.
+
+1. List the E_no, E_name, Salary of all employees working for MANAGER.
+SELECT E_no, E_name, Salary FROM Employees WHERE Designation = 'MANAGER';
+
+2. Display all the details of the employee whose salary is more than the Sal of any IT PROFF..
+SELECT * FROM Employees WHERE Salary > (SELECT MAX(Salary) FROM Employees WHERE Designation = 'IT PROFF');
+
+3. List the employees in the ascending order of Designations of those joined after 1981.
+SELECT * FROM Employees WHERE Joining_Date > '1981-12-31' ORDER BY Designation ASC;
+
+4. List the employees along with their Experience and Daily Salary.
+SELECT E_name,(YEAR(CURDATE()) - YEAR(joiningdate)) AS Experience,(Salary / 365) AS Daily_Salary FROM EMPLOYEE;
+
+5. List the employees who are either ‘CLERK’ or ‘ANALYST’ .
+SELECT * FROM Employees WHERE Designation IN ('CLERK', 'ANALYST');
+
+6. List the employees who joined on 1-MAY-81, 3-DEC-81, 17-DEC-81,19-JAN-80 .
+SELECT * FROM Employees WHERE Joining_Date IN ('1981-05-01', '1981-12-03', '1981-12-17', '1980-01-19');
+
+7. List the employees who are working for the Deptno 10 or20.
+SELECT * FROM Employees WHERE Deptno IN (10, 20);
+
+8. List the Enames those are starting with ‘S’ .
+SELECT E_name FROM Employees WHERE E_name LIKE 'S%';
+
+9. Dislay the name as well as the first five characters of name(s) starting with ‘H’
+SELECT E_name, SUBSTR(E_name, 1, 5) AS First_Five_Chars FROM Employees WHERE E_name LIKE 'H%';
+
+10. List all the emps except ‘PRESIDENT’ & ‘MGR” in asc order of Salaries.
+SELECT * FROM Employees WHERE Designation NOT IN ('PRESIDENT', 'MGR') ORDER BY Salary ASC;
+
+
+
