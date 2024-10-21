@@ -1,0 +1,67 @@
+Q1.Perform following queries on bank database: 
+1. List loan data, orderedby decreasing amounts,then increasing loannumbers.
+SQL> select * from loan order by amount desc,loan_no asc;
+ 
+2. Retrieve a list of all bank branch details, ordered by branch city, with each city’s branches 
+listed in reverse order of holdings. 
+SQL>SELECT branch_id, branch_name, branch_city, holdings FROM Branch ORDER BY branch_city ASC, holdings DESC;
+
+3. Find the average account balance at each branch 
+SELECT branch_name, AVG(balance) AS avg_balance FROM Account GROUP BY branch_name;
+
+4. Find the number of customers city wise. 
+SELECT customer_city, COUNT(DISTINCT customer_id) AS num_customers FROM Customer GROUP BY customer_city;
+
+5. Find the number of branches of the bank.
+SELECT COUNT(branch_name) AS num_branches FROM Branch;
+ 
+6. Find the average account balance of those branches where the account balance is greater 
+than Rs. 1200. 
+SELECT branch_name, AVG(balance) AS avg_balance
+FROM Account
+WHERE balance > 1200
+GROUP BY branch_name;
+
+7. Find all cities with more than two customers living in the city 
+SELECT customer_city, COUNT(customer_id) AS num_customers
+FROM Customer
+GROUP BY customer_city
+HAVING COUNT(customer_id) > 2;
+
+
+Q2. For EMPLOYEE schema: (Emp_no, E_name, E_address, E_ph_no, 
+Dept_no,Dept_name,Job_id,Designation , Salary, joiningdate) 
+Write SQL statements for the following query. 
+
+1. Display total salary spent for each job category. 
+SELECT Designation, SUM(Salary) AS total_salary_spent
+FROM EMPLOYEE
+GROUP BY Designation;
+
+2. Display lowest paid employee details under each manager.
+SELECT manager_id, employee_id, employee_name, salary
+FROM employees e
+WHERE salary = (
+    SELECT MIN(salary)
+    FROM employees
+    WHERE manager_id = e.manager_id
+)
+ORDER BY manager_id;
+
+3. Display number of employees working in each department and their department name. 
+SELECT Dept_name, COUNT(Emp_no) AS num_employees
+FROM EMPLOYEE
+GROUP BY Dept_name;
+
+4. Display the details of employees sorting the salary in increasing order. 
+SELECT *
+FROM EMPLOYEE
+ORDER BY Salary ASC;
+
+5. Show the record of employee arning salary greater than16000 in each department. 
+SELECT *
+FROM EMPLOYEE
+WHERE Salary > 16000
+ORDER BY Dept_name, Salary DESC;
+
+
