@@ -1,0 +1,123 @@
+SQL> CREATE OR REPLACE
+  2  PROCEDURE HELLO IS
+  3  BEGIN
+  4  DBMS_OUTPUT.PUT_LINE(’Hello World’);
+  5  END;
+  6  /
+
+Procedure created.
+
+SQL> set serveroutput on;
+SQL> CREATE OR REPLACE
+  2  PROCEDURE HELLO IS
+  3  BEGIN
+  4  DBMS_OUTPUT.PUT_LINE(’Hello World’);
+  5  END;
+  6  /
+
+Procedure created.
+
+
+SQL> exec Hello
+Hello World
+
+PL/SQL procedure successfully completed.
+
+
+SQL> exec hello;
+Hello World
+
+PL/SQL procedure successfully completed.
+
+
+
+SQL> CREATE OR REPLACE PROCEDURE ME(X IN NUMBER)Is
+  2  BEGIN
+  3  dbms_output.put_line(x*x);
+  4  end;
+  5  /
+
+Procedure created.
+
+SQL> set serveroutput on;
+SQL> CREATE OR REPLACE PROCEDURE ME(X IN NUMBER)Is
+  2  BEGIN
+  3  dbms_output.put_line(x*x);
+  4  end;
+  5  /
+
+Procedure created.
+
+SQL> exec me(3);
+9
+
+
+
+
+1. Write a procedure which accept the account number of a customer and retrieve the
+balance.
+CREATE PROCEDURE GetAccountBalance(
+    IN account_number INT,
+    OUT balance DECIMAL(10, 2)
+)
+BEGIN
+    SELECT account_balance INTO balance
+    FROM accounts
+    WHERE account_no = account_number;
+END;
+
+To call the first procedure
+
+CALL GetAccountBalance(12345, @balance);
+SELECT @balance;
+
+2. Write a procedure which accept the deptno and print minimum salary of employee
+working in that department.
+CREATE PROCEDURE GetMinSalaryByDept(
+    IN dept_no INT
+)
+BEGIN
+    DECLARE min_salary DECIMAL(10, 2);
+    
+    SELECT MIN(salary) INTO min_salary
+    FROM employees
+    WHERE department_id = dept_no;
+
+    SELECT min_salary AS Minimum_Salary;
+END;
+
+To execute the second 
+CALL GetMinSalaryByDept(10);
+
+
+3. Write a function which accept a deptno and check whether it is present in dept Table or
+not. If it is present print number of employees working in that department.
+
+
+CREATE FUNCTION CheckDeptAndCountEmployees(
+    IN dept_no INT
+) RETURNS INT
+BEGIN
+    DECLARE employee_count INT;
+
+    -- Check if the department exists
+    IF EXISTS (SELECT 1 FROM departments WHERE department_id = dept_no) THEN
+        -- Count the number of employees in that department
+        SELECT COUNT(*) INTO employee_count
+        FROM employees
+        WHERE department_id = dept_no;
+
+        RETURN employee_count;
+    ELSE
+        RETURN 0; -- Return 0 if the department does not exist
+    END IF;
+END;
+
+
+
+To use the function:
+
+
+SELECT CheckDeptAndCountEmployees(10);
+
+
