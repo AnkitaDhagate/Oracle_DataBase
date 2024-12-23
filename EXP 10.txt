@@ -1,0 +1,56 @@
+1. Create trigger before deleting an account [store deleted record value in new table and display both
+table].
+
+SQL to create a new table for deleted records:
+CREATE TABLE deleted_accounts (
+    account_id INT,
+    account_name VARCHAR(255),
+    account_balance DECIMAL(10, 2),
+    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+SQL to create the trigger:
+CREATE TRIGGER before_delete_account
+BEFORE DELETE ON accounts
+FOR EACH ROW
+BEGIN
+    INSERT INTO deleted_accounts (account_id, account_name, account_balance)
+    VALUES (OLD.account_id, OLD.account_name, OLD.account_balance);
+END;
+
+2. Create trigger on account before inserting an account balance
+Check whether balance is greater than 500 or not?
+
+CREATE TRIGGER before_insert_account
+BEFORE INSERT ON accounts
+FOR EACH ROW
+BEGIN
+    IF NEW.account_balance <= 500 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Account balance must be greater than 500.';
+    END IF;
+END;
+
+
+3. Input roll number of student and display corresponding name, marks college etc. by using cursor
+
+DECLARE student_cursor CURSOR FOR 
+SELECT name, marks, college FROM students WHERE roll_number = @roll_number;
+
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+SET done = FALSE;
+
+OPEN student_cursor;
+
+FETCH student_cursor INTO student_name, student_marks, student_college;
+
+WHILE NOT done DO
+    -- Display the results, you might use a print statement or return them in a procedure
+    SELECT student_name, student_marks, student_college;
+    
+    FETCH student_cursor INTO student_name, student_marks, student_college;
+END WHILE;
+
+CLOSE student_cursor;
+
+
